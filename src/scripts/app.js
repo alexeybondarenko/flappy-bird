@@ -50,7 +50,7 @@
         main();
     }
 
-    var now
+    var now;
     // Main loop
     function main () {
         now = Date.now();
@@ -63,7 +63,10 @@
         requestAnimFrame(main);
     }
     function reset () {
-
+        tubes = [];
+        isGameOver = true;
+        player.y = 200;
+        player.speed = 0;
     }
 
     /**
@@ -88,7 +91,9 @@
 
     function update (dt) {
         handleInputs (dt);
-
+        if (isGameOver) {
+            return;
+        }
         player.update(dt);
         updateTubes(dt);
         checkCollisions();
@@ -130,6 +135,7 @@
     function handleInputs (dt) {
         if (keyPressed[32]) { // space pressed
             player.speedUp(dt);
+            isGameOver = false;
         }
     }
 
@@ -137,7 +143,14 @@
         if (player.y <= 0 || player.y >= canvas.height) {
             return true;
         }
-        return false;
+        return isHaveCollisionsWithTubes (player);
+    }
+    function isHaveCollisionsWithTubes (player) {
+        var cur = null;
+        for (var i = 0, l = tubes.length; i < l; i++) {
+            cur = tubes[i];
+
+        }
     }
     function checkCollisions () {
         if (isHaveCollisions()) {
@@ -162,9 +175,10 @@
     }
 
     function addTube () {
-        tubes.push(new Tube(50, getRandomInt(50, canvas.height - 50), canvas.height, canvas.width));
+        tubes.push(new Tube(50, getRandomInt(50, canvas.height - 50), canvas.height, canvas.width, tubeApertureWidth));
     }
 
+    var isGameOver = false;
     var tubes = [];
     var player = new Bird (canvas.height);
 
