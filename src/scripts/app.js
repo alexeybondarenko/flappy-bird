@@ -13,6 +13,10 @@
                 window.setTimeout(callback, 1000 / 60);
             };
     })();
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
 
     var lstTime = null;
 
@@ -46,9 +50,10 @@
         main();
     }
 
+    var now
     // Main loop
     function main () {
-        var now = Date.now();
+        now = Date.now();
         var dt = (now - lstTime) / 1000.0;
 
         update(dt);
@@ -70,15 +75,42 @@
         ctx.fillRect(0, 0, canvas.width,  canvas.height);
 
         player.render(ctx);
+        renderTubes(ctx);
     }
+    function renderTubes (ctx) {
+        tubes.forEach(function (item) {
+            renderTube(item, ctx);
+        });
+    }
+    function renderTube (tube, ctx) {
+        tube.render(ctx);
+    }
+
     function update (dt) {
         handleInputs (dt);
 
         player.update(dt);
-
+        updateTubes(dt);
         checkCollisions();
     }
 
+    var totalDelay;
+    function updateTubes (dt) {
+
+        tubes = clearTubes (tubes);
+        if (totalDelay < 2) {
+            totalDelay += dt;
+        } else {
+            addTube();
+            totalDelay = 0;
+        }
+        (tubes || []).forEach(function (item) {
+            updateTube(item, dt);
+        });
+    }
+    function updateTube (tube, dt) {
+        tube.update(dt);
+    }
 
     /**
      * Inputs
@@ -113,18 +145,29 @@
         //}
     }
 
-    var Tube = function () {
+    var tubeSpeed = 80,
+        aperture = {
+            width: 90
+        };
 
+    function Tube (width, position) {
+        this.width = width || 40;
+        this.aperture = position || 120;
+    }
+    Tube.prototype.x = canvas.width;
+
+    Tube.prototype.render = function (ctx) {
+        ctx.fillStyle = '#519265';
+        console.log('render', this);
+        // top rect
+        var topRectEnd = this.aperture - aperture.width / 2;
+        ctx.fillRect(this.x, 0, this.width, topRectEnd);
+        ctx.fillRect(this.x, topRectEnd + aperture.width, this.width, canvas.height - topRectEnd - aperture.width);
     };
-    Tube.prototype.x = 0;
-    Tube.prototype.width = 20;
-    Tube.prototype.aperture = {
-        width: 20,
-        position: 20 // y position of aperture center in percentage
+    Tube.prototype.update = function (dt) {
+        this.x -= tubeSpeed * dt;
     };
-    //Tube.prototype.render = function (ctx) {
-    //    ctx.fillStyle =
-    //}
+
     /**
      * Birst
      */
@@ -159,6 +202,26 @@
         this.speed += 80;
     };
 
+    function clearTubes (tubes) { // clear invisible tubes
+        var cur;
+        for (var i = 0; i < tubes.length; i++) {
+            cur = tubes[i];
+            if ((cur.x + cur.width + 10) < 0) {
+                tubes.shift();
+                i--;
+                console.log('clear');
+            } else {
+                break;
+            }
+        }
+        return tubes;
+    }
+
+    function addTube () {
+        tubes.push(new Tube(50, getRandomInt(50, canvas.height - 50)));
+    }
+
+    var tubes = [];
     var player = new Bird ();
 
 
