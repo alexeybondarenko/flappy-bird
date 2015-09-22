@@ -140,67 +140,11 @@
         return false;
     }
     function checkCollisions () {
-        //if (isHaveCollisions()) {
-        //    console.log('have collisions');
-        //}
-    }
-
-    var tubeSpeed = 80,
-        aperture = {
-            width: 90
-        };
-
-    function Tube (width, position) {
-        this.width = width || 40;
-        this.aperture = position || 120;
-    }
-    Tube.prototype.x = canvas.width;
-
-    Tube.prototype.render = function (ctx) {
-        ctx.fillStyle = '#519265';
-        console.log('render', this);
-        // top rect
-        var topRectEnd = this.aperture - aperture.width / 2;
-        ctx.fillRect(this.x, 0, this.width, topRectEnd);
-        ctx.fillRect(this.x, topRectEnd + aperture.width, this.width, canvas.height - topRectEnd - aperture.width);
-    };
-    Tube.prototype.update = function (dt) {
-        this.x -= tubeSpeed * dt;
-    };
-
-    /**
-     * Birst
-     */
-    var Bird = function () {
-
-    };
-    Bird.prototype.acceleration = -9.8;
-
-    Bird.prototype.speed = 0;
-    Bird.prototype.x = 200;
-    Bird.prototype.y = 50;
-
-    // render bird on canvas
-    Bird.prototype.render = function (ctx) {
-        ctx.fillStyle = "#00A308";
-        ctx.beginPath();
-        ctx.arc(this.x, canvas.height - this.y, 10, 0, Math.PI*2, true);
-        ctx.closePath();
-        ctx.fill();
-    };
-    // update object based on the time delta
-    Bird.prototype.update = function (dt) {
-        //dt *= 10;
-        this.speed += this.acceleration * dt * 90;
-        this.y += this.speed * dt;
-        if (this.y < 0) {
-            this.y = 0;
-            this.speed = 0;
+        if (isHaveCollisions()) {
+            reset();
+            console.log('have collisions');
         }
-    };
-    Bird.prototype.speedUp = function (x, y) {
-        this.speed += 80;
-    };
+    }
 
     function clearTubes (tubes) { // clear invisible tubes
         var cur;
@@ -209,7 +153,7 @@
             if ((cur.x + cur.width + 10) < 0) {
                 tubes.shift();
                 i--;
-                console.log('clear');
+
             } else {
                 break;
             }
@@ -218,11 +162,11 @@
     }
 
     function addTube () {
-        tubes.push(new Tube(50, getRandomInt(50, canvas.height - 50)));
+        tubes.push(new Tube(50, getRandomInt(50, canvas.height - 50), canvas.height, canvas.width));
     }
 
     var tubes = [];
-    var player = new Bird ();
+    var player = new Bird (canvas.height);
 
 
 })();
