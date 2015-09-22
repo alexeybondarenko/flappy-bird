@@ -20,8 +20,8 @@
         this.x -= tubeSpeed * dt;
     };
 
-    window.tubeSpeed = 80;
-    window.tubeApertureWidth = 90;
+    window.tubeSpeed = 120;
+    window.tubeApertureWidth = 100;
 
     window.Tube = Tube;
 })();

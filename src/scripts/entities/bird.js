@@ -4,7 +4,7 @@
 
         this.canvasHeight = canvasHeight;
     };
-    Bird.prototype.acceleration = -9.8;
+    Bird.prototype.acceleration = -9.8; // metres / sec^2
 
     Bird.prototype.speed = 0;
     Bird.prototype.x = 200;
@@ -12,7 +12,7 @@
 
     // render bird on canvas
     Bird.prototype.render = function (ctx) {
-        ctx.fillStyle = "#00A308";
+        ctx.fillStyle = "#3C0069";
         ctx.beginPath();
         ctx.arc(this.x, this.canvasHeight - this.y, 10, 0, Math.PI*2, true);
         ctx.closePath();
@@ -20,16 +20,17 @@
     };
     // update object based on the time delta
     Bird.prototype.update = function (dt) {
-        //dt *= 10;
-        this.speed += this.acceleration * dt * 90;
-        this.y += this.speed * dt;
+        dt *= 9.8;
+        this.y += this.speed * dt + this.acceleration * dt*dt / 2;
+        this.speed += this.acceleration * dt;
         if (this.y < 0) {
             this.y = 0;
             this.speed = 0;
         }
     };
     Bird.prototype.speedUp = function (x, y) {
-        this.speed += 80;
+        console.log('speedUp');
+        this.speed = 40;
     };
 
     window.Bird = Bird;

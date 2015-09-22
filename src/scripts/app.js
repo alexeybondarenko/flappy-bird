@@ -90,7 +90,7 @@
     }
 
     function update (dt) {
-        handleInputs (dt);
+
         if (isGameOver) {
             return;
         }
@@ -121,23 +121,12 @@
      * Inputs
      */
 
-    var keyPressed = {};
-    document.addEventListener('keydown', function (e, data) {
-        keyPressed[e.keyCode] = true;
-    });
     document.addEventListener('keyup', function (e, data) {
-        keyPressed[e.keyCode] = false;
-    });
-    document.addEventListener('blur', function (e, data) {
-        keyPressed = {};
-    });
-
-    function handleInputs (dt) {
-        if (keyPressed[32]) { // space pressed
-            player.speedUp(dt);
+        if (e.keyCode == 32) { // space pressed
+            player.speedUp();
             isGameOver = false;
         }
-    }
+    });
 
     function isHaveCollisions () {
         if (player.y <= 0 || player.y >= canvas.height) {
