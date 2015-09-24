@@ -57,8 +57,7 @@
     };
 
     window.tubeSpeed = 120;
-    //window.tubeApertureWidth = 100;
-    window.tubeApertureWidth = 200;
+    window.tubeApertureWidth = 120;
 
     window.Tube = Tube;
 })();
