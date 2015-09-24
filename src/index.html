@@ -6,12 +6,54 @@
     <title>Flappy Bird</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .game {
+            position: relative;
+            display: inline-block;
+            font-family: Verdana;
+            cursor: pointer;
+        }
+        .game__score {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        .game__message {
+            display: none;
+            position: absolute;
+            text-align: center;
+            pointer-events: none;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+        }
+        .game.is-over .game__message_over {
+            display: block;
+        }
+        .game.is-welcome .game__message_welcome {
+            display: block;
+        }
+    </style>
 </head>
 <body>
 <!--[if lt IE 8]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
-<div id="game"></div>
+<div id="game" class="game is-welcome">
+    <div class="game__messages">
+        <div class="game__message game__message_over">
+            <h3>GAME OVER</h3>
+            <p>Press SPACE to try again</p>
+        </div>
+        <div class="game__message game__message_welcome">
+            <h3>Flappy Bird</h3>
+            <p>Press SPACE to start</p>
+        </div>
+    </div>
+    <div class="game__score"></div>
+</div>
 <script src="scripts/resources.js"></script>
 <script src="scripts/entities/bird.js"></script>
 <script src="scripts/entities/tube.js"></script>

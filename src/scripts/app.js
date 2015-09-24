@@ -24,6 +24,8 @@
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
 
+    var $gameScore = container.querySelector('.game__score');
+
     container.appendChild(canvas);
 
     canvas.width = 600;
@@ -64,9 +66,19 @@
     }
     function reset () {
         tubes = [];
-        isGameOver = true;
-        player.y = 200;
+        player.y = 300;
         player.speed = 0;
+    }
+    function stopGame () {
+        isGameOver = true;
+        container.classList.add('is-over');
+    }
+    function startGame () {
+        isGameOver = false;
+        container.classList.remove('is-welcome');
+        container.classList.remove('is-over');
+        score = 0;
+        reset();
     }
 
     /**
@@ -97,12 +109,13 @@
         player.update(dt);
         updateTubes(dt);
         checkCollisions();
+        $gameScore.innerText = score;
     }
 
     var totalDelay;
     function updateTubes (dt) {
 
-        tubes = clearTubes (tubes);
+        passedTubes = clearTubes (passedTubes);
         if (totalDelay < 2) {
             totalDelay += dt;
         } else {
@@ -123,8 +136,10 @@
 
     document.addEventListener('keyup', function (e, data) {
         if (e.keyCode == 32) { // space pressed
+            if (isGameOver) {
+                startGame ();
+            }
             player.speedUp();
-            isGameOver = false;
         }
     });
 
@@ -134,16 +149,21 @@
         }
         return isHaveCollisionsWithTubes (player);
     }
-    function isHaveCollisionsWithTubes (player) {
-        var cur = null;
-        for (var i = 0, l = tubes.length; i < l; i++) {
-            cur = tubes[i];
 
+    function isHaveCollisionsWithTubes (player) {
+
+        if (!tubes[0]) return false;
+        if (tubes[0].checkCollisionWithPlayer (player)) return true;
+
+        if ((player.x - (tubes[0].x + tubes[0].width)) > player.radius) {
+            passedTubes.push(tubes.shift());
+            score++;
         }
+        return false;
     }
     function checkCollisions () {
         if (isHaveCollisions()) {
-            reset();
+            stopGame();
             console.log('have collisions');
         }
     }
@@ -164,12 +184,65 @@
     }
 
     function addTube () {
-        tubes.push(new Tube(50, getRandomInt(50, canvas.height - 50), canvas.height, canvas.width, tubeApertureWidth));
+        tubes.push(new Tube(50, getRandomInt(50, canvas.height - tubeApertureWidth / 2 - 50), canvas.height, canvas.width, tubeApertureWidth));
     }
 
-    var isGameOver = false;
-    var tubes = [];
+    var isGameOver = true;
+    var tubes = [],
+        passedTubes = [];
+    var score = 0;
     var player = new Bird (canvas.height);
 
+    //
+    //console.log('A', circleIntersectsRectangle({
+    //    x: 6,
+    //    y: 7,
+    //    radius: 1
+    //}, {
+    //    x: 8,
+    //    y: 0,
+    //    width: 2,
+    //    height: 7
+    //}));
+    //console.log('B', circleIntersectsRectangle({
+    //    x: 8,
+    //    y: 9,
+    //    radius: 1
+    //}, {
+    //    x: 8,
+    //    y: 0,
+    //    width: 2,
+    //    height: 7
+    //}));
+    //console.log('C', circleIntersectsRectangle({
+    //    x: 12,
+    //    y: 2,
+    //    radius: 1
+    //}, {
+    //    x: 8,
+    //    y: 0,
+    //    width: 2,
+    //    height: 7
+    //}));
+    //console.log('D', circleIntersectsRectangle({
+    //    x: 10,
+    //    y: 8,
+    //    radius: 1
+    //}, {
+    //    x: 8,
+    //    y: 0,
+    //    width: 2,
+    //    height: 7
+    //}));
+    //console.log('E', circleIntersectsRectangle({
+    //    x: 10,
+    //    y: 5,
+    //    radius: 1
+    //}, {
+    //    x: 8,
+    //    y: 0,
+    //    width: 2,
+    //    height: 7
+    //}));
 
 })();
