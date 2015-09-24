@@ -74,6 +74,8 @@
     function reset () {
         tubes = [];
         player.y = 300;
+        player.x = Math.min(canvas.width * .30, 200);
+        console.log(player.x);
         player.speed = 0;
     }
     function stopGame () {

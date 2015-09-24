@@ -5,11 +5,9 @@
             halfHeight = rect.height / 2;
 
         if (Math.abs(circle.x - (rect.x + halfWidth)) >= (circle.radius + halfWidth)) {
-            console.log('> x');
             return false;
         }
         if (Math.abs(circle.y - (rect.y + halfHeight)) >= (circle.radius + halfHeight)) {
-            console.log('> y');
             return false;
         }
 
@@ -46,7 +44,6 @@
     };
     Tube.prototype.render = function (ctx) {
         ctx.fillStyle = '#519265';
-        console.log('render', this);
         // top rect
         var topRectEnd =
         ctx.fillRect(this.x, 0, this.width, this.aperture.start);
