@@ -50,7 +50,6 @@
         // top rect
         var topRectEnd =
         ctx.fillRect(this.x, 0, this.width, this.aperture.start);
-        ctx.fillStyle = '#519210';
         ctx.fillRect(this.x, this.aperture.end, this.width, this.height - this.aperture.end);
     };
     Tube.prototype.update = function (dt) {
