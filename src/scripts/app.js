@@ -31,6 +31,13 @@
     canvas.width = 600;
     canvas.height = 400;
 
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        //render();
+    }
+    window.addEventListener('resize', resize, false); resize();
+
     var brickPattern = null;
 
     // Loading resources
