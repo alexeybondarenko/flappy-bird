@@ -134,14 +134,27 @@
      * Inputs
      */
 
+    function action () {
+        if (isGameOver) {
+            startGame ();
+        }
+        player.speedUp();
+    }
+    var isTouchDevice = true == ("ontouchstart" in window || window.DocumentTouch && document instanceof DocumentTouch);
     document.addEventListener('keyup', function (e, data) {
         if (e.keyCode == 32) { // space pressed
-            if (isGameOver) {
-                startGame ();
-            }
-            player.speedUp();
+            action ();
         }
     });
+    if (isTouchDevice) {
+        document.addEventListener('touchend', function (e, data) {
+            action();
+        });
+    } else {
+        document.addEventListener('click', function (e, data) {
+            action();
+        });
+    }
 
     function isHaveCollisions () {
         if (player.y <= 0 || player.y >= canvas.height) {
