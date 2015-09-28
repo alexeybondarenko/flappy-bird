@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/alexeybondarenko/flappy-bird#readme",
   "devDependencies": {
+    "browser-sync": "^2.9.6",
+    "gulp": "^3.9.0",
+    "gulp-docco": "0.0.4",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.10",
     "karma-chrome-launcher": "^0.2.0",

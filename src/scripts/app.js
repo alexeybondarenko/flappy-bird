@@ -2,7 +2,7 @@
     'use strict';
 
     // A cross-browser requestAnimationFrame
-    // See https://hacks.mozilla.org/2011/08/animating-with-javascript-from-setinterval-to-requestanimationframe/
+    // See [link](https://hacks.mozilla.org/2011/08/animating-with-javascript-from-setinterval-to-requestanimationframe/)
     var requestAnimFrame = (function(){
         return window.requestAnimationFrame       ||
             window.webkitRequestAnimationFrame ||
@@ -13,45 +13,56 @@
                 window.setTimeout(callback, 1000 / 60);
             };
     })();
+    // Generate random number from min to max
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-
-    var lstTime = null;
-
+    // ## Canvas element
+    // Game container element
     var container = document.querySelector('#game');
+    // Create new canvas element
     var canvas = document.createElement('canvas');
+    // Get 2D graphic context from canvas.
+    // Canvas provides methods for drawing shapes and manipulating with them.
     var ctx = canvas.getContext('2d');
 
+    // Score element
     var $gameScore = container.querySelector('.game__score');
 
+    // Appending canvas to container element
     container.appendChild(canvas);
 
     canvas.width = 600;
     canvas.height = 400;
 
+    // ## Resize
+    // Callback on resizing event. We make canvas element full-screen size.
     function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        //render();
     }
     window.addEventListener('resize', resize, false); resize();
 
-    var brickPattern = null;
-
-    // Loading resources
-
+    // ## Resources
+    // We load resources for the app using simple library [resources.js](./resources.html)
     resources.load([
         'img/brickwall.png'
     ]);
+    // Waiting of ready event
     resources.onReady(init);
 
-    // Initializing
+
+    var lstTime = null,
+        now;
+
+    var brickPattern = null;
+
+    // ## Initializing
     function init () {
         console.log('init');
 
-        // backgrounds
+        // Setting background pattern variable
         brickPattern = ctx.createPattern(resources.get('img/brickwall.png'), 'repeat');
 
         reset();
@@ -59,7 +70,9 @@
         main();
     }
 
-    var now;
+    // ## Game loop
+    // Game process include frame rendering one be one. So we neww the loop, which initialize re-render call.
+
     // Main loop
     function main () {
         now = Date.now();
@@ -214,57 +227,5 @@
         passedTubes = [];
     var score = 0;
     var player = new Bird (canvas.height);
-
-    //
-    //console.log('A', circleIntersectsRectangle({
-    //    x: 6,
-    //    y: 7,
-    //    radius: 1
-    //}, {
-    //    x: 8,
-    //    y: 0,
-    //    width: 2,
-    //    height: 7
-    //}));
-    //console.log('B', circleIntersectsRectangle({
-    //    x: 8,
-    //    y: 9,
-    //    radius: 1
-    //}, {
-    //    x: 8,
-    //    y: 0,
-    //    width: 2,
-    //    height: 7
-    //}));
-    //console.log('C', circleIntersectsRectangle({
-    //    x: 12,
-    //    y: 2,
-    //    radius: 1
-    //}, {
-    //    x: 8,
-    //    y: 0,
-    //    width: 2,
-    //    height: 7
-    //}));
-    //console.log('D', circleIntersectsRectangle({
-    //    x: 10,
-    //    y: 8,
-    //    radius: 1
-    //}, {
-    //    x: 8,
-    //    y: 0,
-    //    width: 2,
-    //    height: 7
-    //}));
-    //console.log('E', circleIntersectsRectangle({
-    //    x: 10,
-    //    y: 5,
-    //    radius: 1
-    //}, {
-    //    x: 8,
-    //    y: 0,
-    //    width: 2,
-    //    height: 7
-    //}));
 
 })();
