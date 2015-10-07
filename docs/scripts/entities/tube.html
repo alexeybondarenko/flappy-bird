@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>tube.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>tube.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">circleIntersectsRectangle</span>(<span class="hljs-params">circle, rect</span>) </span>{
+        <span class="hljs-keyword">var</span> halfWidth = rect.width / <span class="hljs-number">2</span>,
+            halfHeight = rect.height / <span class="hljs-number">2</span>;
+
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Math</span>.abs(circle.x - (rect.x + halfWidth)) &gt;= (circle.radius + halfWidth)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Math</span>.abs(circle.y - (rect.y + halfHeight)) &gt;= (circle.radius + halfHeight)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Tube</span> (<span class="hljs-params">width, position, height, x, apertureWidth</span>) </span>{
+        <span class="hljs-keyword">this</span>.width = width || <span class="hljs-number">40</span>;
+        <span class="hljs-keyword">this</span>.x = x;
+        <span class="hljs-keyword">this</span>.height = height;
+
+        <span class="hljs-keyword">this</span>.aperture = {
+            start: position - <span class="hljs-keyword">this</span>.width / <span class="hljs-number">2</span>
+        };
+        <span class="hljs-keyword">this</span>.aperture.end = <span class="hljs-keyword">this</span>.aperture.start + apertureWidth;
+    }
+    Tube.prototype.checkCollisionWithPlayer = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">player</span>) </span>{
+        <span class="hljs-keyword">var</span> circle = {
+            x: player.x,
+            y: player.y,
+            radius: player.radius
+        }, rectTop = {
+            x: <span class="hljs-keyword">this</span>.x,
+            y: <span class="hljs-number">0</span>,
+            width: <span class="hljs-keyword">this</span>.width,
+            height: <span class="hljs-keyword">this</span>.aperture.start
+        }, rectBottom = {
+            x: <span class="hljs-keyword">this</span>.x,
+            y: <span class="hljs-keyword">this</span>.aperture.end,
+            width: <span class="hljs-keyword">this</span>.width,
+            height: <span class="hljs-keyword">this</span>.height
+        };
+        <span class="hljs-keyword">return</span> circleIntersectsRectangle (circle, rectTop) || circleIntersectsRectangle (circle, rectBottom);
+    };
+    Tube.prototype.render = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ctx</span>) </span>{
+        ctx.fillStyle = <span class="hljs-string">'#519265'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>top rect</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> topRectEnd =
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.aperture.start);
+        ctx.fillRect(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.aperture.end, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height - <span class="hljs-keyword">this</span>.aperture.end);
+    };
+    Tube.prototype.update = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">dt</span>) </span>{
+        <span class="hljs-keyword">this</span>.x -= tubeSpeed * dt;
+    };
+
+    <span class="hljs-built_in">window</span>.tubeSpeed = <span class="hljs-number">120</span>;
+    <span class="hljs-built_in">window</span>.tubeApertureWidth = <span class="hljs-number">120</span>;
+
+    <span class="hljs-built_in">window</span>.Tube = Tube;
+})();</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
